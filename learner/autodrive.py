@@ -17,7 +17,7 @@ def train(dataset):
 
     model = CNN.model(64, 3, 3, shape)
     model.compile(optimizer='rmsprop', loss='binary_crossentropy', metrics=["accuracy"])
-    model.fit_generator(DataLoader.generate_data(training_path), 100, 10)
+    model.fit_generator(DataLoader.generate_data(training_path), 10000, 10)
     CNN.store_model(model)
 
 
