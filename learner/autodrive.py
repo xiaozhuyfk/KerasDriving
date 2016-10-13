@@ -1,6 +1,7 @@
 import logging
 import globals
 from data.data_loader import DataLoader
+from model.cnn import CNN
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s '
                            ': %(module)s : %(message)s',
@@ -10,7 +11,15 @@ logger = logging.getLogger(__name__)
 
 
 def train(dataset):
-    pass
+    #X, Y = DataLoader.load_data(globals.config.get("Data", "training-data"))
+    training_path = globals.config.get("Data", "training-data")
+    shape = (210, 280, 3)
+
+    model = CNN.model(64, 3, 3, shape)
+    model.compile(optimizer='rmsprop', loss='binary_crossentropy', metrics=["accuracy"])
+    model.fit_generator(DataLoader.generate_data(training_path), 1000, 10)
+    CNN.store_model(model)
+
 
 def test(dataset):
     pass
@@ -38,8 +47,6 @@ def main():
 
     # Read global config
     globals.read_configuration(args.config)
-
-    print globals.config.get("Data", "training-data")
 
     if args.which == 'train':
         train(args.dataset)

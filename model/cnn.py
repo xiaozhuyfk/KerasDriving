@@ -1,6 +1,6 @@
 import globals
 from model.util import load_model, save_model_to_file
-from keras.layers import Input, LSTM, Dense, Embedding, Merge, Convolution2D, Activation, MaxPooling2D, Flatten
+from keras.layers import Input, LSTM, Dense, Embedding, Merge, Convolution2D, Activation, MaxPooling2D, Flatten, Dropout
 from keras.models import Model, model_from_json, Sequential
 
 
@@ -38,16 +38,12 @@ class CNN(object):
 
         model.add(Dense(256))
         model.add(Activation('relu'))
-        model.add(Dropout(0.5))
+        model.add(Dropout(0.25))
 
         model.add(Dense(13))
         model.add(Activation('softmax'))
 
-        # let's train the model using SGD + momentum (how original).
-        sgd = SGD(lr=0.01, decay=1e-6, momentum=0.9, nesterov=True)
-        model.compile(loss='categorical_crossentropy',
-                      optimizer=sgd,
-                      metrics=['accuracy'])
+        return model
 
     @staticmethod
     def load_model():

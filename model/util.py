@@ -11,7 +11,7 @@ def save_model_to_file(model, struct_file, weights_file):
 
 def load_model(struct_file, weights_file):
     model = model_from_json(open(struct_file, 'r').read())
-    model.compile(loss="categorical_crossentropy", optimizer='sgd')
-    model.load_weights(weights_file)
+    model.compile(optimizer='rmsprop', loss='binary_crossentropy', metrics=["accuracy"])
 
+    model.load_weights(weights_file)
     return model
