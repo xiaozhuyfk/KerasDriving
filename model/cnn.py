@@ -32,11 +32,13 @@ class CNN(object):
         """
 
         model.add(Flatten())
-        model.add(Dense(4096))
+        model.add(Dense(512))
         model.add(Activation('relu'))
 
+        """
         model.add(Dense(4096))
         model.add(Activation('relu'))
+        """
 
         model.add(Dense(256))
         model.add(Activation('relu'))
