@@ -27,7 +27,6 @@ class DataLoader(object):
         Y = []
         for key, value in db.RangeIter():
             datum.ParseFromString(value)
-
             data = datum_to_array(datum)
             affordance = np.array(datum.float_data)[:-1]
             print affordance
@@ -42,14 +41,15 @@ class DataLoader(object):
     @staticmethod
     def generate_data(path):
         db = leveldb.LevelDB(path)
-        datum = caffe_pb2.Datum()
+        #datum = caffe_pb2.Datum()
+        datum = data_pb2.Datum()
 
         while True:
             X = []
             Y = []
             for key, value in db.RangeIter():
                 datum.ParseFromString(value)
-                data = caffe.io.datum_to_array(datum)
+                data = datum_to_array(datum)
                 affordance = np.array(datum.float_data)[:-1]
                 image = np.transpose(data, (1,2,0))
                 X.append(image)
