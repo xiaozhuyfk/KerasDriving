@@ -1,4 +1,4 @@
-import caffe
+#import caffe
 import leveldb
 import numpy as np
 #from caffe.proto import caffe_pb2
