@@ -38,7 +38,7 @@ class CNN(object):
         model.add(Dropout(0.25))
 
         model.add(Dense(14))
-        model.add(Activation('softmax'))
+        model.add(Activation('sigmoid'))
 
         return model
 
