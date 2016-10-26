@@ -42,8 +42,19 @@ def train(dataset):
     CNN.store_model(model)
 
 
+
 def test(dataset):
-    pass
+    training_path = globals.config.get("Data", "training-data")
+    db = DataLoader.get_db(globals.config.get("Data", "training-data"))
+    aff, image = DataLoader.get_data(db, "00000001")
+
+    X = np.array([np.array(image)])
+
+    model = CNN.load_model()
+    Y = model.predict(X)
+
+    print Y
+    print aff
 
 
 def main():
