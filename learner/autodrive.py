@@ -3,7 +3,7 @@ import globals
 import numpy as np
 import random
 from keras.callbacks import EarlyStopping
-from data.data_loader import DataLoader
+from data.data_loader import DataLoader, datum_to_array
 from model.cnn import CNN
 from data import data_pb2
 
