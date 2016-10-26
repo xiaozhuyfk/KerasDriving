@@ -37,7 +37,7 @@ def train(dataset):
                                   mode='auto')
 
     model.fit_generator(DataLoader.generate_data(training_path),
-                        samples_per_epoch=8192,
+                        samples_per_epoch=64,
                         nb_epoch=10,
                         callbacks=[earlyStopping])
 
