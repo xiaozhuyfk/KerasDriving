@@ -4,7 +4,7 @@ import numpy as np
 from keras.callbacks import EarlyStopping
 from data.data_loader import DataLoader
 from model.cnn import CNN
-
+from data import data_pb2
 
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s '
@@ -30,16 +30,35 @@ def train(dataset):
     shape = (210, 280, 3)
 
     model = CNN.model(64, 3, 3, shape)
-    model.compile(optimizer='rmsprop', loss='mae', metrics=["accuracy"])
-    earlyStopping = EarlyStopping(monitor='val_loss',
-                                  patience=0,
-                                  verbose=0,
-                                  mode='auto')
+    model.compile(optimizer='rmsprop', loss='mae')
 
-    model.fit_generator(DataLoader.generate_data(training_path),
-                        samples_per_epoch=64,
-                        nb_epoch=10,
-                        callbacks=[earlyStopping])
+    #earlyStopping = EarlyStopping(monitor='val_loss',
+    #                              patience=0,
+    #                              verbose=0,
+    #                              mode='auto')
+
+    db = DataLoader.get_db(training_path)
+    datum = data_pb2.Datum()
+    X = []
+    Y = []
+    indices = random.sample(xrange(484815), 64)
+    for idx in indices:
+        key = str(idx)
+        key = "0" * (8 - len(key)) + key
+        value = db.Get(key)
+        datum.ParseFromString(value)
+        data = datum_to_array(datum)
+        affordance = np.array(datum.float_data)
+        image = np.transpose(data, (1,2,0))
+
+        X.append(image)
+        Y.append(affordance)
+
+    model.fit(np.array(X), np.array(Y))
+
+    #model.fit_generator(DataLoader.generate_data(training_path),
+    #                    samples_per_epoch=64,
+    #                    nb_epoch=10)
 
     CNN.store_model(model)
 
