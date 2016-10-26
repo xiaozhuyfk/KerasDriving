@@ -1,8 +1,10 @@
 import logging
 import globals
+import numpy as np
 from keras.callbacks import EarlyStopping
 from data.data_loader import DataLoader
 from model.cnn import CNN
+
 
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s '

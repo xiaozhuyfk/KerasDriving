@@ -4,7 +4,7 @@ import numpy as np
 #from caffe.proto import caffe_pb2
 import data_pb2
 import random
-from matplotlib import pyplot as plt
+#from matplotlib import pyplot as plt
 
 def datum_to_array(datum):
     """Converts a datum to an array. Note that the label is not returned,
