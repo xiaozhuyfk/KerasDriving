@@ -1,7 +1,9 @@
 import logging
 import globals
+from keras.callbacks import EarlyStopping
 from data.data_loader import DataLoader
 from model.cnn import CNN
+
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s '
                            ': %(module)s : %(message)s',
@@ -12,12 +14,31 @@ logger = logging.getLogger(__name__)
 
 def train(dataset):
     #X, Y = DataLoader.load_data(globals.config.get("Data", "training-data"))
+    """
+    db = DataLoader.get_db(globals.config.get("Data", "training-data"))
+
+    X = []
+    Y = []
+    iterations = 10000
+
+    aff, image = DataLoader.get_data(db, "00001439")
+    """
+
     training_path = globals.config.get("Data", "training-data")
     shape = (210, 280, 3)
 
     model = CNN.model(64, 3, 3, shape)
-    model.compile(optimizer='rmsprop', loss='binary_crossentropy', metrics=["accuracy"])
-    model.fit_generator(DataLoader.generate_data(training_path), 10000, 10)
+    model.compile(optimizer='rmsprop', loss='mae', metrics=["accuracy"])
+    earlyStopping = EarlyStopping(monitor='val_loss',
+                                  patience=0,
+                                  verbose=0,
+                                  mode='auto')
+
+    model.fit_generator(DataLoader.generate_data(training_path),
+                        samples_per_epoch=8192,
+                        nb_epoch=10,
+                        callbacks=[earlyStopping])
+
     CNN.store_model(model)
 
 

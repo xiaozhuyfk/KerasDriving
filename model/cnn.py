@@ -22,29 +22,22 @@ class CNN(object):
         model.add(MaxPooling2D(pool_size=(2, 2)))
         model.add(Dropout(0.25))
 
-        """
         model.add(Convolution2D(nb_filter, nb_row, nb_col, border_mode="same"))
         model.add(Activation('relu'))
         model.add(Convolution2D(nb_filter, nb_row, nb_col))
         model.add(Activation('relu'))
         model.add(MaxPooling2D(pool_size=(2, 2)))
         model.add(Dropout(0.25))
-        """
 
         model.add(Flatten())
         model.add(Dense(512))
         model.add(Activation('relu'))
 
-        """
-        model.add(Dense(4096))
-        model.add(Activation('relu'))
-        """
-
         model.add(Dense(256))
         model.add(Activation('relu'))
         model.add(Dropout(0.25))
 
-        model.add(Dense(13))
+        model.add(Dense(14))
         model.add(Activation('softmax'))
 
         return model
