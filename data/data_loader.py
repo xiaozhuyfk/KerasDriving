@@ -70,6 +70,10 @@ class DataLoader(object):
         db = leveldb.LevelDB(path)
         #datum = caffe_pb2.Datum()
         datum = data_pb2.Datum()
+        weights = [1,
+                   7, 3.5, 7, 75, 75,
+                   9.5, 5.5, 5.5, 9.5, 75, 75, 75,
+                   1]
 
         while True:
             X = []
@@ -83,6 +87,9 @@ class DataLoader(object):
                 data = datum_to_array(datum)
                 affordance = np.array(datum.float_data)
                 image = np.transpose(data, (1,2,0))
+
+                for i in xrange(len(affordance)):
+                    affordance[i] = 0.1 + 0.8 * (affordance[i] / float(weights[i]))
 
                 X.append(image)
                 Y.append(affordance)

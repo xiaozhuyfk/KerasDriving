@@ -10,35 +10,29 @@ class CNN(object):
     def model(nb_filter, nb_row, nb_col, shape):
         model = Sequential()
         model.add(Convolution2D(
-            nb_filter=nb_filter,
-            nb_row=nb_row,
-            nb_col=nb_col,
+            nb_filter=48,
+            nb_row=11,
+            nb_col=11,
             border_mode='same',
-            input_shape=shape))
-        model.add(Activation('relu'))
+            input_shape=shape,
+            activation="relu"))
 
-        model.add(Convolution2D(nb_filter, nb_row, nb_col))
-        model.add(Activation('relu'))
+        model.add(Convolution2D(64, 5, 5, activation="relu"))
         model.add(MaxPooling2D(pool_size=(2, 2)))
         model.add(Dropout(0.25))
 
-        model.add(Convolution2D(nb_filter, nb_row, nb_col, border_mode="same"))
-        model.add(Activation('relu'))
-        model.add(Convolution2D(nb_filter, nb_row, nb_col))
-        model.add(Activation('relu'))
+        model.add(Convolution2D(128, 3, 3, border_mode="same", activation="relu"))
+        model.add(Convolution2D(128, 3, 3, activation="relu"))
         model.add(MaxPooling2D(pool_size=(2, 2)))
         model.add(Dropout(0.25))
 
         model.add(Flatten())
         model.add(Dense(512))
-        model.add(Activation('relu'))
 
         model.add(Dense(256))
-        model.add(Activation('relu'))
         model.add(Dropout(0.25))
 
         model.add(Dense(14))
-        model.add(Activation('sigmoid'))
 
         return model
 

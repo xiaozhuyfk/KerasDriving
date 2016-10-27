@@ -11,6 +11,6 @@ def save_model_to_file(model, struct_file, weights_file):
 
 def load_model(struct_file, weights_file):
     model = model_from_json(open(struct_file, 'r').read())
-    model.compile(optimizer='rmsprop', loss='mae')
+    model.compile(optimizer='rmsprop', loss='mse')
     model.load_weights(weights_file)
     return model

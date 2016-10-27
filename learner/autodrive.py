@@ -31,12 +31,18 @@ def train(dataset):
     shape = (210, 280, 3)
 
     model = CNN.model(64, 3, 3, shape)
-    model.compile(optimizer='rmsprop', loss='mae')
+    model.compile(optimizer='rmsprop', loss='mse')
 
     #earlyStopping = EarlyStopping(monitor='val_loss',
     #                              patience=0,
     #                              verbose=0,
     #                              mode='auto')
+
+    """
+    weights = [1,
+               7, 3.5, 7, 75, 75,
+               9.5, 5.5, 5.5, 9.5, 75, 75, 75,
+               1]
 
     db = DataLoader.get_db(training_path)
     datum = data_pb2.Datum()
@@ -52,14 +58,18 @@ def train(dataset):
         affordance = np.array(datum.float_data)
         image = np.transpose(data, (1,2,0))
 
+        for i in xrange(len(affordance)):
+            affordance[i] = 0.1 + 0.8 * (affordance[i] / float(weights[i]))
+
         X.append(image)
         Y.append(affordance)
 
     model.fit(np.array(X), np.array(Y))
+    """
 
-    #model.fit_generator(DataLoader.generate_data(training_path),
-    #                    samples_per_epoch=64,
-    #                    nb_epoch=10)
+    model.fit_generator(DataLoader.generate_data(training_path),
+                        samples_per_epoch=8192,
+                        nb_epoch=10)
 
     CNN.store_model(model)
 
@@ -70,10 +80,15 @@ def test(dataset):
     db = DataLoader.get_db(globals.config.get("Data", "training-data"))
     aff, image = DataLoader.get_data(db, "00000001")
 
+    weights = [1,
+               7, 3.5, 7, 75, 75,
+               9.5, 5.5, 5.5, 9.5, 75, 75, 75,
+               1]
+
     X = np.array([np.array(image)])
 
     model = CNN.load_model()
-    Y = model.predict(X)
+    Y = model.predict_proba(X)
 
     print Y
     print aff
