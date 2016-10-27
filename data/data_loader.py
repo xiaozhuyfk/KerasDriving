@@ -102,7 +102,7 @@ class DataLoader(object):
             for key, value in db.RangeIter():
                 datum.ParseFromString(value)
                 data = datum_to_array(datum)
-                affordance = 0.1 + ((0.8 * np.array(datum.float_data)) / weights)
+                affordance = np.array(datum.float_data) / weights
                 image = np.transpose(data, (1,2,0))
                 #for i in xrange(len(affordance)):
                     #affordance[i] = 0.1 + 0.8 * (affordance[i] / float(weights[i]))

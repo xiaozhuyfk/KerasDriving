@@ -17,19 +17,19 @@ class CNN(object):
             input_shape=shape,
             activation="relu"))
 
-        model.add(Convolution2D(64, 5, 5, activation="relu"))
+        model.add(Convolution2D(32, 5, 5, activation="relu"))
         model.add(MaxPooling2D(pool_size=(2, 2)))
         model.add(Dropout(0.25))
 
-        model.add(Convolution2D(128, 3, 3, border_mode="same", activation="relu"))
-        model.add(Convolution2D(128, 3, 3, activation="relu"))
+        model.add(Convolution2D(64, 3, 3, border_mode="same", activation="relu"))
+        model.add(Convolution2D(64, 3, 3, activation="relu"))
         model.add(MaxPooling2D(pool_size=(2, 2)))
         model.add(Dropout(0.25))
 
         model.add(Flatten())
-        model.add(Dense(512))
-
         model.add(Dense(256))
+
+        model.add(Dense(128))
         model.add(Dropout(0.25))
 
         model.add(Dense(14))
