@@ -74,10 +74,13 @@ class DataLoader(object):
                    7, 3.5, 7, 75, 75,
                    9.5, 5.5, 5.5, 9.5, 75, 75, 75,
                    1]
+        weights = np.array(weights, dtype=np.float32)
 
         while True:
             X = []
             Y = []
+
+            """
             indices = random.sample(xrange(484815), 64)
             for idx in indices:
                 key = str(idx)
@@ -94,14 +97,16 @@ class DataLoader(object):
                 X.append(image)
                 Y.append(affordance)
             yield (np.array(X), np.array(Y))
-
             """
+
             for key, value in db.RangeIter():
-                idx = int(key)
                 datum.ParseFromString(value)
                 data = datum_to_array(datum)
-                affordance = np.array(datum.float_data)[:-1]
+                affordance = 0.1 + ((0.8 * np.array(datum.float_data)) / weights)
                 image = np.transpose(data, (1,2,0))
+                #for i in xrange(len(affordance)):
+                    #affordance[i] = 0.1 + 0.8 * (affordance[i] / float(weights[i]))
+
                 X.append(image)
                 Y.append(affordance)
 
@@ -111,4 +116,3 @@ class DataLoader(object):
                     Y = []
             if len(X) > 0:
                 yield (np.array(X), np.array(Y))
-            """
